@@ -1,6 +1,7 @@
 package com.example.esatestapp3
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -9,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 
 
@@ -16,6 +18,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // Set the status bar to transparent
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        window.statusBarColor = android.graphics.Color.TRANSPARENT
         setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -47,7 +52,9 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this,"this is not a company email", Toast.LENGTH_SHORT).show()
                 }else{
 //                    Toast.makeText(this,"logged in", Toast.LENGTH_SHORT).show()
-                    verifyLogin(email,password) // calling email verification function
+//                    verifyLogin(email,password) // calling email verification function
+                    val intent = Intent(this,DashboardActivity::class.java)
+                    startActivity(intent)
                 }
             }
         }
