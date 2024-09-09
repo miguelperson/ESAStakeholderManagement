@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
 
         loginButton.setOnClickListener{
             val email = emailEditText.text.toString() // getting the text from the email text field
+            val password = passwordEditText.text.toString();
         }
     }
 
