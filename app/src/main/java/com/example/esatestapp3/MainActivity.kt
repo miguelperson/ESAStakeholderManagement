@@ -2,6 +2,7 @@ package com.example.esatestapp3
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -43,6 +44,26 @@ class MainActivity : AppCompatActivity() {
                 verifyLogin(email, password)
             }
         }
+    }
+
+    private fun testFunction(email: String, password: String){
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("http://10.0.2.2:3000/test")
+            .get()
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("NetworkError", "Test connection failed: ${e.message}")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseBody = response.body?.string()
+                Log.d("TestConnection", "Response: $responseBody")
+            }
+        })
+
     }
 
     // Function to verify login
