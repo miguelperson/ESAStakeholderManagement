@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     private fun testFunction(email: String, password: String){
         val client = OkHttpClient()
         val request = Request.Builder()
-            .url("http://10.0.2.2:3000/test")
+            .url("https://sandbattery.info/test")
             .get()
             .build()
 
@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
 
         // Replace with your backend login endpoint
         val request = Request.Builder()
-            .url("http://10.0.2.2:3000/login")  // Use this for Android emulator testing
+            .url("https://sandbattery.info/login")  // Use this for Android emulator testing
             .post(body)
             .build()
 

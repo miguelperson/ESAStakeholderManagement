@@ -67,12 +67,12 @@ class RegisterActivity : AppCompatActivity() {
 
         val body = RequestBody.create("application/json; charset=utf-8".toMediaType(), json)
         val request = Request.Builder()
-            .url("http://10.0.2.2:3000/register")  // Use this for Android emulator testing
+            .url("https://sandbattery.info/register")  // register end point juts needs email and password
             .post(body)
             .build()
 
         // Make asynchronous network call
-        client.newCall(request).enqueue(object : Callback {
+        client.newCall(request).enqueue(object : Callback { // sends json information to the API endpoint
             override fun onFailure(call: Call, e: IOException) {
                 runOnUiThread {
                     Toast.makeText(this@RegisterActivity, "Network Error", Toast.LENGTH_SHORT).show()
