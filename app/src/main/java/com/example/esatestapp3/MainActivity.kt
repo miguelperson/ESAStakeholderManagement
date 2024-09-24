@@ -11,6 +11,8 @@ import androidx.core.view.WindowCompat
 import com.example.esatestapp3.ui.RegisterActivity
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
+import org.json.JSONException
+import org.json.JSONObject
 import java.io.IOException
 
 
@@ -95,36 +97,36 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                val responseBody = response.body // Get the body safely
+                val responseBody = response.body?.string()
 
-                if (responseBody != null) {
-                    val responseString = responseBody.string() // Convert it to string
-
-                    runOnUiThread {
-                        if (response.isSuccessful) {
-                            // Handle successful login
-                            handleSuccessfulLogin()
-                        } else {
-                            // Handle failed login
-                            Toast.makeText(this@MainActivity, "Login Failed: $responseString", Toast.LENGTH_SHORT).show()
+                runOnUiThread {
+                    if (response.isSuccessful && responseBody != null) {
+                        Log.d("LoginResponse", responseBody) // Log the full response
+                        try {
+                            val jsonResponse = JSONObject(responseBody)
+                            val userEmail = jsonResponse.getString("email")
+                            handleSuccessfulLogin(userEmail)
+                        } catch (e: JSONException) {
+                            Log.e("LoginError", "Error parsing JSON: ${e.message}")
+                            Toast.makeText(this@MainActivity, "Login Failed: Invalid response format", Toast.LENGTH_SHORT).show()
                         }
-                    }
-                } else {
-                    // Handle the case where the body is null
-                    runOnUiThread {
-                        Toast.makeText(this@MainActivity, "Login Failed: Empty response", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Log.d("LoginError", "Response not successful or body null: $responseBody")
+                        Toast.makeText(this@MainActivity, "Login Failed: $responseBody", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
+
         })
     }
 
     // Handle successful login and navigate to dashboard
-    private fun handleSuccessfulLogin() {
+    private fun handleSuccessfulLogin(email: String) {
         Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show()
 
         // Navigate to DashboardActivity
-        val intent = Intent(this, DashboardActivity::class.java)
+        val intent = Intent(this, landingPage::class.java)
+        intent.putExtra("userEmail",email)
         startActivity(intent)
         finish() // Optionally call finish to remove MainActivity from the back stack
     }
