@@ -80,23 +80,22 @@ class MainActivity : AppCompatActivity() {
             }
         """.trimIndent()
 
-        val body = RequestBody.create("application/json; charset=utf-8".toMediaType(), json)
+        val body = RequestBody.create("application/json; charset=utf-8".toMediaType(), json) // format of the JSON
 
-        // Replace with your backend login endpoint
-        val request = Request.Builder()
-            .url("https://sandbattery.info/login")  // Use this for Android emulator testing
+        val request = Request.Builder() // adding the info to the json
+            .url("https://sandbattery.info/login")
             .post(body)
             .build()
 
         // Make asynchronous network call
-        client.newCall(request).enqueue(object : Callback {
+        client.newCall(request).enqueue(object : Callback { // this part explicitly sends the JSON to the webserver
             override fun onFailure(call: Call, e: IOException) {
                 runOnUiThread {
                     Toast.makeText(this@MainActivity, "Network Error", Toast.LENGTH_SHORT).show()
                 }
             }
 
-            override fun onResponse(call: Call, response: Response) {
+            override fun onResponse(call: Call, response: Response) { // explicitly recieving the server response
                 val responseBody = response.body?.string()
 
                 runOnUiThread {
