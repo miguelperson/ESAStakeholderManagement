@@ -48,7 +48,7 @@ class addingBatteryPAge : AppCompatActivity() {
                 Toast.makeText(this, "please fill in all information needed", Toast.LENGTH_SHORT)
                     .show()
             } else {
-                addBattery(batName, batID)
+                addBattery(batName, batID, userEmail.toString())
             }
         }
         homebutton.setOnClickListener {
@@ -66,12 +66,13 @@ class addingBatteryPAge : AppCompatActivity() {
 
     }
 
-    private fun addBattery(batName: String, batID: String) {
+    private fun addBattery(batName: String, batID: String, userEmail: String) {
         val client = OkHttpClient()
         val json = """
             {
-                "name": "$batName"
-                "password": "$batID"
+                "name": "$batName",
+                "batteryID": "$batID",
+                "user":"$userEmail"
             }
         """.trimIndent()
 
@@ -99,13 +100,13 @@ class addingBatteryPAge : AppCompatActivity() {
 
                 runOnUiThread {
                     if (response.isSuccessful && responseBody != null) {
-                        Log.d("LoginResponse", responseBody) // Log the full response
+                        Log.d("BatteryRegistration", responseBody) // Log the full response
                         try {
                             val jsonResponse = JSONObject(responseBody)
-                            val userEmail = jsonResponse.getString("email")
+//                            val userEmail = jsonResponse.getString("email")
                             Toast.makeText(
                                 this@addingBatteryPAge,
-                                "Login Failed: Invalid response format",
+                                "Battery Successfully Registered",
                                 Toast.LENGTH_SHORT
                             ).show() // temporary place holder
 

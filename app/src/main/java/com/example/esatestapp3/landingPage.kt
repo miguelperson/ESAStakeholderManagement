@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.esatestapp3.ui.RegisterActivity
+import okhttp3.OkHttpClient
 
 class landingPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,13 +24,17 @@ class landingPage : AppCompatActivity() {
 
         val profileButton = findViewById<Button>(R.id.profile) // will go to a profile page
         val addBattery = findViewById<Button>(R.id.addBattery) // page to add batteries
-//        val logoutButton = findViewById<Button>(R.id.logoutButton) // logout button value is created
+        val toggleCharging = findViewById<Button>(R.id.toggleCharging)
+        val toggleHeating = findViewById<Button>(R.id.toggleHeating)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
+//        toggleHeating.setOnClickListener{
+//        }
         profileButton.setOnClickListener{
             val intent = Intent(this, profilePage::class.java)
             intent.putExtra("userEmail", userEmail)
