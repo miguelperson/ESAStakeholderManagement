@@ -104,7 +104,7 @@ class addingBatteryPAge : AppCompatActivity() {
                         try {
                             val jsonResponse = JSONObject(responseBody)
 //                            val userEmail = jsonResponse.getString("email")
-                            Toast.makeText(
+                            Toast.makeText( // comment
                                 this@addingBatteryPAge,
                                 "Battery Successfully Registered",
                                 Toast.LENGTH_SHORT
