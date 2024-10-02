@@ -40,6 +40,7 @@ class addingBatteryPAge : AppCompatActivity() {
             findViewById<Button>(R.id.addBattery3) // going to give new functionality to this button
         val TDESName = findViewById<EditText>(R.id.TDESName)
         val TDESid = findViewById<EditText>(R.id.TDESid)
+        Log.d("email of User", "the email is: "+userEmail.toString())
 
         addBattery.setOnClickListener {
             val batName = TDESName.text.toString()
@@ -48,6 +49,7 @@ class addingBatteryPAge : AppCompatActivity() {
                 Toast.makeText(this, "please fill in all information needed", Toast.LENGTH_SHORT)
                     .show()
             } else {
+                Log.d("main test", "email is: "+userEmail.toString())
                 addBattery(batName, batID, userEmail.toString())
             }
         }
@@ -68,6 +70,7 @@ class addingBatteryPAge : AppCompatActivity() {
 
     private fun addBattery(batName: String, batID: String, userEmail: String) {
         val client = OkHttpClient()
+        Log.d("Second email test", "email is still: "+userEmail)
         val json = """
             {
                 "name": "$batName",
@@ -80,7 +83,7 @@ class addingBatteryPAge : AppCompatActivity() {
 
         // Replace with your backend login endpoint
         val request = Request.Builder()
-            .url("https://sandbattery.info/batRegister")  // Use this for Android emulator testing
+            .url("https://sandbattery.info/registerBattery")  // Use this for Android emulator testing
             .post(body)
             .build()
 
@@ -130,5 +133,9 @@ class addingBatteryPAge : AppCompatActivity() {
             }
 
         })
+        val intent = Intent(this, landingPage::class.java)
+        intent.putExtra("userEmail", userEmail)
+        startActivity(intent)
+        finish()
     }
 }
