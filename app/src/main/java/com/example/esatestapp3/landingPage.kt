@@ -94,8 +94,8 @@ class landingPage : AppCompatActivity() {
                 response.body?.let { responseBody ->
                     val json = JSONObject(responseBody.string())
                     val batteryName = if (json.has("batteryName")) json.getString("batteryName") else "Unknown"
-                    val internalTemp = json.getDouble("currentInternalTemp")
-                    val ambientTemp = json.getDouble("currentRoomTemp")
+                    val internalTemp = if(json.has("currentInternalTemp")) json.getString("currentInternalTemp") else "No Temp."
+                    val ambientTemp = if(json.has("currentRoomTemp")) json.getString("currentRoomTemp") else "No Temp."
 
                     runOnUiThread {
                         batteryTitle.text = batteryName
