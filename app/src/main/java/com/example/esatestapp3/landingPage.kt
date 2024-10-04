@@ -65,6 +65,10 @@ class landingPage : AppCompatActivity() {
             toggleHeat(userEmail.toString())
         }
 
+        toggleCharging.setOnClickListener{
+            toggleCharge(userEmail.toString())
+        }
+
         profileButton.setOnClickListener{
             val intent = Intent(this, profilePage::class.java)
             intent.putExtra("userEmail", userEmail)
@@ -78,6 +82,63 @@ class landingPage : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+    }
+
+    private fun toggleCharge(userEmail: String){
+        val client = OkHttpClient()
+        val json = """
+            {
+                "user":"$userEmail"
+            }
+        """.trimIndent()
+        val body = RequestBody.create("application/json; charset=utf-8".toMediaType(), json)
+
+        val request = Request.Builder()
+            .url("https://sandbattery.info/appChargingToggle")  // Use this for Android emulator testing
+            .post(body)
+            .build()
+
+        client.newCall(request).enqueue(object: Callback{
+            override fun onFailure(call: Call, e: IOException){
+                runOnUiThread{
+                    Toast.makeText(this@landingPage, "Network Error", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onResponse(
+                call: Call,
+                response: Response
+            ){
+                val responseBody = response.body?.string()
+
+                runOnUiThread{
+                    if(response.isSuccessful && responseBody != null){
+                        try{
+                            val jsonResponse = JSONObject(responseBody)
+                            val status = jsonResponse.getString("message") // status holds battery heating status
+                            Toast.makeText(
+                                this@landingPage,
+                                "toggle successful",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } catch (e: JSONException){
+                            Toast.makeText(
+                                this@landingPage,
+                                "invalid response format",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    } else{
+                        Toast.makeText(
+                            this@landingPage,
+                            "no battery was toggled",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+        })
     }
 
     private fun toggleHeat(userEmail: String){
