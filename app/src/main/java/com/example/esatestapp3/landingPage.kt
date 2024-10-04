@@ -115,7 +115,9 @@ class landingPage : AppCompatActivity() {
                     if(response.isSuccessful && responseBody != null){
                         try{
                             val jsonResponse = JSONObject(responseBody)
-                            val status = jsonResponse.getString("message") // status holds battery heating status
+                            val status = jsonResponse.getString("message") // if status == true then battery set to charge, if status == false then battery not charging
+
+                            Log.d("charging status response", status)
                             Toast.makeText(
                                 this@landingPage,
                                 "toggle successful",
