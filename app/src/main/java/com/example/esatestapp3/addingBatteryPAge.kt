@@ -70,7 +70,7 @@ class addingBatteryPAge : AppCompatActivity() {
 
     private fun addBattery(batName: String, batID: String, userEmail: String) {
         val client = OkHttpClient()
-        Log.d("Second email test", "email is still: "+userEmail)
+        // Log.d("Second email test", "email is still: "+userEmail)
         val json = """
             {
                 "name": "$batName",

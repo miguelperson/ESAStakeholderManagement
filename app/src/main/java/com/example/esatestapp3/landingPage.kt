@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -19,9 +20,12 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import okhttp3.Call
 import okhttp3.Callback
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody
 import okhttp3.Response
+import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 
@@ -57,6 +61,9 @@ class landingPage : AppCompatActivity() {
         }
         startBatteryCheckCoroutine(userEmail.toString(), batteryTitle, internalTempView, ambientTempView)
 
+        toggleHeating.setOnClickListener{
+            toggleHeat(userEmail.toString())
+        }
 
         profileButton.setOnClickListener{
             val intent = Intent(this, profilePage::class.java)
@@ -71,6 +78,63 @@ class landingPage : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+    }
+
+    private fun toggleHeat(userEmail: String){
+        val client = OkHttpClient()
+        val json = """
+            {
+                "user":"$userEmail"
+            }
+        """.trimIndent()
+        val body = RequestBody.create("application/json; charset=utf-8".toMediaType(), json)
+
+        val request = Request.Builder()
+            .url("https://sandbattery.info/appHeatToggle")  // Use this for Android emulator testing
+            .post(body)
+            .build()
+
+        client.newCall(request).enqueue(object: Callback{
+            override fun onFailure(call: Call, e: IOException){
+                runOnUiThread{
+                    Toast.makeText(this@landingPage, "Network Error", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onResponse(
+                call: Call,
+                response: Response
+            ){
+                val responseBody = response.body?.string()
+
+                runOnUiThread{
+                    if(response.isSuccessful && responseBody != null){
+                        try{
+                            val jsonResponse = JSONObject(responseBody)
+                            val status = jsonResponse.getString("message") // status holds battery heating status
+                            Toast.makeText(
+                                this@landingPage,
+                                "toggle successful",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } catch (e: JSONException){
+                            Toast.makeText(
+                                this@landingPage,
+                                "invalid response format",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    } else{
+                        Toast.makeText(
+                            this@landingPage,
+                            "no battery was toggled",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+        })
     }
 
     private fun startBatteryCheckCoroutine(userEmail: String, batteryTitle: TextView, internalTempView: TextView, ambientTempView: TextView) {

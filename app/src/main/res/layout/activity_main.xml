@@ -40,7 +40,7 @@
         android:layout_marginTop="48dp"
         android:backgroundTint="#FDFDFD"
         android:fontFamily="sans-serif-black"
-        android:text="ESA Stakeholders"
+        android:text="Thermal Energy Storage"
         android:textAlignment="center"
         android:textColor="#76A8D6"
         android:textSize="34sp"
