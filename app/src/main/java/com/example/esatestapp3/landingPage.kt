@@ -51,6 +51,7 @@ class landingPage : AppCompatActivity() {
         val batteryTitle = findViewById<TextView>(R.id.batteryName)
         val ambientTempView = findViewById<TextView>(R.id.ambientTemp)
         val internalTempView = findViewById<TextView>(R.id.internalTemp)
+        val setRoomTemp = findViewById<TextView>(R.id.setRoomTemp)
 
 
 
@@ -59,7 +60,7 @@ class landingPage : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        startBatteryCheckCoroutine(userEmail.toString(), batteryTitle, internalTempView, ambientTempView)
+        startBatteryCheckCoroutine(userEmail.toString(), batteryTitle, internalTempView, ambientTempView, setRoomTemp)
 
         toggleHeating.setOnClickListener{
             toggleHeat(userEmail.toString())
@@ -175,6 +176,8 @@ class landingPage : AppCompatActivity() {
                         try{
                             val jsonResponse = JSONObject(responseBody)
                             val status = jsonResponse.getString("message") // status holds battery heating status
+                            Log.d("charging status response", status)
+
                             Toast.makeText(
                                 this@landingPage,
                                 "toggle successful",
@@ -200,16 +203,16 @@ class landingPage : AppCompatActivity() {
         })
     }
 
-    private fun startBatteryCheckCoroutine(userEmail: String, batteryTitle: TextView, internalTempView: TextView, ambientTempView: TextView) {
+    private fun startBatteryCheckCoroutine(userEmail: String, batteryTitle: TextView, internalTempView: TextView, ambientTempView: TextView, setRoomTemp: TextView) {
         job = CoroutineScope(Dispatchers.Main).launch {
             while (isActive) {
-                checkBatteryStatus(userEmail, batteryTitle, internalTempView, ambientTempView)
+                checkBatteryStatus(userEmail, batteryTitle, internalTempView, ambientTempView, setRoomTemp)
                 delay(5000) // Delay for 5 seconds
             }
         }
     }
 
-    private fun checkBatteryStatus(userEmail: String, batteryTitle: TextView, internalTempView: TextView, ambientTempView: TextView) {
+    private fun checkBatteryStatus(userEmail: String, batteryTitle: TextView, internalTempView: TextView, ambientTempView: TextView, setRoomTemp: TextView) {
         val request = Request.Builder().url("https://sandbattery.info/batteryStatus?email=$userEmail").get().build()
 
         client.newCall(request).enqueue(object : Callback {
@@ -223,11 +226,13 @@ class landingPage : AppCompatActivity() {
                     val batteryName = if (json.has("batteryName")) json.getString("batteryName") else "Unknown"
                     val internalTemp = if(json.has("currentInternalTemp")) json.getString("currentInternalTemp") else "No Temp."
                     val ambientTemp = if(json.has("currentRoomTemp")) json.getString("currentRoomTemp") else "No Temp."
+                    val roomTemp = if(json.has("setRoomTemp")) json.getString("setRoomTemp") else "no set temp found"
 
                     runOnUiThread {
                         batteryTitle.text = batteryName
                         internalTempView.text = "Internal Temp: $internalTemp°C"
                         ambientTempView.text = "Ambient Temp: $ambientTemp°C"
+                        setRoomTemp.text = "Room Temp Set To: $roomTemp°C"
                     }
                 }
             }
