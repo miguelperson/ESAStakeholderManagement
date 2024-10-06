@@ -36,6 +36,7 @@
         android:layout_marginBottom="32dp"
         android:backgroundTint="#E9B872"
         android:text="Add Battery"
+        android:textColor="#151515"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -49,6 +50,7 @@
         android:layout_marginBottom="32dp"
         android:backgroundTint="#E9B872"
         android:text="Home"
+        android:textColor="#151515"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button9"
         app:layout_constraintStart_toStartOf="parent" />
@@ -62,6 +64,7 @@
         android:layout_marginBottom="32dp"
         android:backgroundTint="#E9B872"
         android:text="Profile"
+        android:textColor="#151515"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button9" />
@@ -72,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="25dp"
-        android: android:backgroundTint="#90A959"
+        android:backgroundTint="#90A959"
         android:text="Toggle Heating"
         app:layout_constraintBottom_toTopOf="@+id/bottomAppBar"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -83,7 +86,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginBottom="25dp"
+        android:backgroundTint="#E9B872"
         android:text="Toggle Charging"
+        android:textColor="#151515"
         app:layout_constraintBottom_toTopOf="@+id/bottomAppBar"
         app:layout_constraintStart_toStartOf="parent" />
 
