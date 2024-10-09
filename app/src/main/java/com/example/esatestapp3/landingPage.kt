@@ -30,7 +30,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 
-class landingPage : AppCompatActivity() {
+class landingPage : AppCompatActivity() { // first full feature version 10/9/2024 Miguel B.
     private val client = OkHttpClient()
     private var job: Job? = null
     override fun onCreate(savedInstanceState: Bundle?) {
