@@ -43,6 +43,7 @@ class landingPage : AppCompatActivity() {
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
         window.statusBarColor = android.graphics.Color.TRANSPARENT
+        window.navigationBarColor = android.graphics.Color.BLACK
 
         val profileButton = findViewById<Button>(R.id.profile) // will go to a profile page
         val addBattery = findViewById<Button>(R.id.addBattery) // page to add batteries
@@ -52,6 +53,8 @@ class landingPage : AppCompatActivity() {
         val ambientTempView = findViewById<TextView>(R.id.ambientTemp)
         val internalTempView = findViewById<TextView>(R.id.internalTemp)
         val setRoomTemp = findViewById<TextView>(R.id.setRoomTemp)
+        val chargingSchedule = findViewById<TextView>(R.id.chargingSchedule)
+        val heatingSchedule = findViewById<TextView>(R.id.heatingSchedule)
 
 
 
@@ -60,7 +63,7 @@ class landingPage : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        startBatteryCheckCoroutine(userEmail.toString(), batteryTitle, internalTempView, ambientTempView, setRoomTemp)
+        startBatteryCheckCoroutine(userEmail.toString(), batteryTitle, internalTempView, ambientTempView, setRoomTemp, chargingSchedule, heatingSchedule)
 
         toggleHeating.setOnClickListener{
             toggleHeat(userEmail.toString())
@@ -203,16 +206,16 @@ class landingPage : AppCompatActivity() {
         })
     }
 
-    private fun startBatteryCheckCoroutine(userEmail: String, batteryTitle: TextView, internalTempView: TextView, ambientTempView: TextView, setRoomTemp: TextView) {
+    private fun startBatteryCheckCoroutine(userEmail: String, batteryTitle: TextView, internalTempView: TextView, ambientTempView: TextView, setRoomTemp: TextView, chargingSchedule:TextView, heatingSchedule:TextView) {
         job = CoroutineScope(Dispatchers.Main).launch {
             while (isActive) {
-                checkBatteryStatus(userEmail, batteryTitle, internalTempView, ambientTempView, setRoomTemp)
+                checkBatteryStatus(userEmail, batteryTitle, internalTempView, ambientTempView, setRoomTemp, chargingSchedule, heatingSchedule)
                 delay(5000) // Delay for 5 seconds
             }
         }
     }
 
-    private fun checkBatteryStatus(userEmail: String, batteryTitle: TextView, internalTempView: TextView, ambientTempView: TextView, setRoomTemp: TextView) {
+    private fun checkBatteryStatus(userEmail: String, batteryTitle: TextView, internalTempView: TextView, ambientTempView: TextView, setRoomTemp: TextView, chargingSchedule: TextView, heatingSchedule: TextView) {
         val request = Request.Builder().url("https://sandbattery.info/batteryStatus?email=$userEmail").get().build()
 
         client.newCall(request).enqueue(object : Callback {
@@ -227,12 +230,22 @@ class landingPage : AppCompatActivity() {
                     val internalTemp = if(json.has("currentInternalTemp")) json.getString("currentInternalTemp") else "No Temp."
                     val ambientTemp = if(json.has("currentRoomTemp")) json.getString("currentRoomTemp") else "No Temp."
                     val roomTemp = if(json.has("setRoomTemp")) json.getString("setRoomTemp") else "no set temp found"
+                    val startChargingHour = if(json.has("startChargingHour")) json.getString("startChargingHour") else "00"
+                    val endChargingHour = if(json.has("endChargingHour")) json.getString("endChargingHour") else "00"
+                    val startHeatingHour = if(json.has("startHeatingHour")) json.getString("startHeatingHour") else "00"
+                    val endHeatingHour = if(json.has("endHeatingHour")) json.getString("endHeatingHour") else "00"
+                    val startChargingMinute = if(json.has("startChargingMinute")) json.getString("startChargingMinute") else "0"
+                    val stopHeatingMinute = if(json.has("stopHeatingMinute")) json.getString("stopHeatingMinute") else "0"
+                    val startHeatingMinute = if(json.has("startHeatingMinute")) json.getString("startHeatingMinute") else "0"
+                    val stopChargingminute = if(json.has("stopChargingminute")) json.getString("stopChargingminute") else "0"
 
                     runOnUiThread {
                         batteryTitle.text = batteryName
                         internalTempView.text = "Internal Temp: $internalTemp°C"
                         ambientTempView.text = "Ambient Temp: $ambientTemp°C"
                         setRoomTemp.text = "Room Temp Set To: $roomTemp°C"
+                        chargingSchedule.text = "Charging Schedule Set To: $startChargingHour:${String.format("%02d", startChargingMinute.toInt())} - $endChargingHour:${String.format("%02d", stopChargingminute.toInt())}"
+                        heatingSchedule.text = "Heating Schedule Set To: $startHeatingHour:${String.format("%02d", startHeatingMinute.toInt())} - $endHeatingHour:${String.format("%02d", stopHeatingMinute.toInt())}"
                     }
                 }
             }

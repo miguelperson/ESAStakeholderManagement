@@ -12,17 +12,16 @@
         android:id="@+id/dunes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="251dp"
+        android:layout_marginTop="155dp"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/notusedsanddunes"
         tools:layout_editor_absoluteX="0dp" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
+        android:layout_width="411dp"
+        android:layout_height="98dp"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="22dp"
         app:backgroundTint="#151515"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,8 +74,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="25dp"
-        android:backgroundTint="#90A959"
+        android:backgroundTint="#E9B872"
         android:text="Toggle Heating"
+        android:textColor="#151515"
         app:layout_constraintBottom_toTopOf="@+id/bottomAppBar"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -96,50 +96,71 @@
         android:id="@+id/batteryName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="120dp"
+        android:fontFamily="sans-serif-black"
         android:text="No Battery Added"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/setRoomTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:fontFamily="sans-serif-black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
         android:id="@+id/ambientTemp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="55dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="sans-serif-black"
-        app:layout_constraintBottom_toTopOf="@+id/internalTemp"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setRoomTemp" />
 
     <TextView
         android:id="@+id/internalTemp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="55dp"
-        android:layout_marginBottom="130dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="sans-serif-black"
-        app:layout_constraintBottom_toTopOf="@+id/toggleCharging"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/setRoomTemp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="55dp"
-        android:layout_marginBottom="20dp"
-        android:fontFamily="sans-serif-black"
-        app:layout_constraintBottom_toTopOf="@+id/ambientTemp"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ambientTemp" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="117dp"
         android:layout_height="196dp"
-        android:layout_marginTop="175dp"
+        android:layout_marginTop="150dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/usablelogo" />
+
+    <TextView
+        android:id="@+id/chargingSchedule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/internalTemp" />
+
+    <TextView
+        android:id="@+id/heatingSchedule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chargingSchedule" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
