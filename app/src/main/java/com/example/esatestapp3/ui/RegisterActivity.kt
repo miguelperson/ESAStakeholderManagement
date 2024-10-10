@@ -31,6 +31,8 @@ class RegisterActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        window.navigationBarColor = android.graphics.Color.BLACK
+
         val email = findViewById<EditText>(R.id.registerEmailText) // get email from registration page
         val password = findViewById<EditText>(R.id.editTextTextPassword2) // get password
         val regButton = findViewById<Button>(R.id.button3) // button thing
