@@ -1,6 +1,7 @@
 package com.example.esatestapp3
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -66,11 +67,11 @@ class landingPage : AppCompatActivity() { // first full feature version 10/9/202
         startBatteryCheckCoroutine(userEmail.toString(), batteryTitle, internalTempView, ambientTempView, setRoomTemp, chargingSchedule, heatingSchedule)
 
         toggleHeating.setOnClickListener{
-            toggleHeat(userEmail.toString())
+            toggleHeat(userEmail.toString(), toggleHeating)
         }
 
         toggleCharging.setOnClickListener{
-            toggleCharge(userEmail.toString())
+            toggleCharge(userEmail.toString(), toggleCharging)
         }
 
         profileButton.setOnClickListener{
@@ -88,7 +89,7 @@ class landingPage : AppCompatActivity() { // first full feature version 10/9/202
         }
     }
 
-    private fun toggleCharge(userEmail: String){
+    private fun toggleCharge(userEmail: String, toggleCharging: TextView){
         val client = OkHttpClient()
         val json = """
             {
@@ -120,16 +121,23 @@ class landingPage : AppCompatActivity() { // first full feature version 10/9/202
                         try{
                             val jsonResponse = JSONObject(responseBody)
                             val status = jsonResponse.getString("message") // if status == true then battery set to charge, if status == false then battery not charging
-                            if(status.toBoolean()){
-                                // if response is true change toggleCharging button color to red
+                            Log.d("charging status response", status)
+                            if (status.toBoolean()) {
+                                Toast.makeText(
+                                    this@landingPage,
+                                    "Charging Enabled",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                toggleCharging.setBackgroundColor(Color.parseColor("#90A959"))
+                            } else {
+                                Toast.makeText(
+                                    this@landingPage,
+                                    "Charging Disabled",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                toggleCharging.setBackgroundColor(Color.parseColor("#E9B872"))
                             }
 
-                            Log.d("charging status response", status)
-                            Toast.makeText(
-                                this@landingPage,
-                                "toggle successful",
-                                Toast.LENGTH_SHORT
-                            ).show()
                         } catch (e: JSONException){
                             Toast.makeText(
                                 this@landingPage,
@@ -150,7 +158,7 @@ class landingPage : AppCompatActivity() { // first full feature version 10/9/202
         })
     }
 
-    private fun toggleHeat(userEmail: String){
+    private fun toggleHeat(userEmail: String, toggleHeating: TextView){
         val client = OkHttpClient()
         val json = """
             {
@@ -182,14 +190,25 @@ class landingPage : AppCompatActivity() { // first full feature version 10/9/202
                         try{
                             val jsonResponse = JSONObject(responseBody)
                             val status = jsonResponse.getString("message") // status holds battery heating status
-                            Log.d("charging status response", status)
+                            Log.d("heating status response", status)
+
+                            if(status.toBoolean()){
+                                Toast.makeText(
+                                    this@landingPage,
+                                    "Heating On",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                toggleHeating.setBackgroundColor(Color.parseColor("#A63D40"))
+                            } else{
+                                Toast.makeText(
+                                    this@landingPage,
+                                    "Heating Off",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                toggleHeating.setBackgroundColor(Color.parseColor("#E9B872"))
+                            }
 
 
-                            Toast.makeText(
-                                this@landingPage,
-                                "toggle successful",
-                                Toast.LENGTH_SHORT
-                            ).show()
                         } catch (e: JSONException){
                             Toast.makeText(
                                 this@landingPage,

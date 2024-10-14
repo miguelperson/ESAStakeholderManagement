@@ -55,22 +55,22 @@ class profilePage : AppCompatActivity() {
         chargeHourStart.minValue = 0 // charge start
         chargeHourStart.maxValue = 24
         chargeMinuteStart.minValue = 0
-        chargeMinuteStart.maxValue = 60
+        chargeMinuteStart.maxValue = 59
 
         chargeHourEnd.minValue = 0 // charge end
         chargeHourEnd.maxValue = 24
         chargeMinuteStart.minValue = 0
-        chargeMinuteEnd.maxValue = 60
+        chargeMinuteEnd.maxValue = 59
 
         heatingStartHour.minValue = 0 // heat start
         heatingStartHour.maxValue = 24
         heatingStartMinute.minValue = 0
-        heatingStartMinute.maxValue = 60
+        heatingStartMinute.maxValue = 59
 
         heatingEndHour.minValue = 0 // heat end
         heatingEndHour.maxValue = 24
         heatingEndMinute.minValue = 0
-        heatingEndMinute.maxValue = 60
+        heatingEndMinute.maxValue = 59
 
 
         saveSchedule.setOnClickListener {
