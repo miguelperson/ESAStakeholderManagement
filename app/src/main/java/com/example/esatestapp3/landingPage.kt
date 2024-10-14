@@ -120,6 +120,9 @@ class landingPage : AppCompatActivity() { // first full feature version 10/9/202
                         try{
                             val jsonResponse = JSONObject(responseBody)
                             val status = jsonResponse.getString("message") // if status == true then battery set to charge, if status == false then battery not charging
+                            if(status.toBoolean()){
+                                // if response is true change toggleCharging button color to red
+                            }
 
                             Log.d("charging status response", status)
                             Toast.makeText(
@@ -180,6 +183,7 @@ class landingPage : AppCompatActivity() { // first full feature version 10/9/202
                             val jsonResponse = JSONObject(responseBody)
                             val status = jsonResponse.getString("message") // status holds battery heating status
                             Log.d("charging status response", status)
+
 
                             Toast.makeText(
                                 this@landingPage,
